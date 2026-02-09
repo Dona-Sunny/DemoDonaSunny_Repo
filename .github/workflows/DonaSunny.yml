@@ -1,0 +1,38 @@
+name: Two Job basic Workflow
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  job1-run-python:
+    name: Job 1 - Run Python File
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Run Python script
+        run: python DemoDonaSunny.py
+
+
+  job2-check-files:
+    name: Job 2 - List Files
+    runs-on: ubuntu-latest
+    needs: job1-run-python
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Show files
+        run: ls -la
+
+      - name: Finish message
+        run: echo "Second job completed successfully!"
